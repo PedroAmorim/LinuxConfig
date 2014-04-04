@@ -48,9 +48,6 @@ function run_once(cmd)
   awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
 end
 
--- run_once("urxvtd")
--- run_once("unclutter")
--- run_once("compton")
 run_once("dropbox start -i")
 run_once("xbacklight -75")
 -- }}}
@@ -90,8 +87,8 @@ local layouts = {
 
 -- {{{ Tags
 tags = {
-   names = { " TERMINAL ", " DEV " , " WEB ", " MAIL ", " COMM " , " FILES ", " DEV2 " , " OTHER " },
-   layout = { layouts[3], layouts[3], layouts[3], layouts[3], layouts[3], layouts[3], layouts[3], layouts[3] }
+   names = { " TERMINAL ", " DEV " , " WEB ", " MAIL ", " COMM " , " FILES ", " OTHER " },
+   layout = { layouts[3], layouts[3], layouts[3], layouts[3], layouts[3], layouts[3], layouts[3] }
 }
 for s = 1, screen.count() do
    tags[s] = awful.tag(tags.names, s, tags.layout)
@@ -146,27 +143,6 @@ calendarwidget:set_widget(mytextcalendar)
 calendarwidget:set_bgimage(beautiful.widget_bg)
 lain.widgets.calendar:attach(calendarwidget, { fg = "#FFFFFF", position = "top_right" })
 
---[[ Mail IMAP check
--- commented because it needs to be set before use
-mailwidget = lain.widgets.imap({
-    timeout  = 180,
-    server   = "server",
-    mail     = "mail",
-    password = "keyring get mail",
-    settings = function()
-        mail_notification_preset.fg = white
-        mail  = ""
-        count = ""
-
-        if mailcount > 0 then
-            mail = "Arch "
-            count = mailcount .. " "
-        end
-
-        widget:set_markup(markup(blue, mail) .. markup(white, count))
-    end
-})
-]]
 
 --[[ Pedro
 -- MPD
@@ -254,26 +230,26 @@ batwidget = lain.widgets.bat({
 })
 
 -- ALSA volume bar
-myvolumebar = lain.widgets.alsabar({
-    width  = 80,
-    height = 10,
-    colors = {
-        background = "#383838",
-        unmute     = "#80CCE6",
-        mute       = "#FF9F9F"
-    },
-    notifications = {
-        font      = "Tamsyn",
-        font_size = "12",
-        bar_size  = 32
-    }
-})
-alsamargin = wibox.layout.margin(myvolumebar.bar, 5, 8, 80)
-wibox.layout.margin.set_top(alsamargin, 12)
-wibox.layout.margin.set_bottom(alsamargin, 12)
-volumewidget = wibox.widget.background()
-volumewidget:set_widget(alsamargin)
-volumewidget:set_bgimage(beautiful.widget_bg)
+-- myvolumebar = lain.widgets.alsabar({
+--     width  = 80,
+--     height = 10,
+--     colors = {
+--         background = "#383838",
+--         unmute     = "#80CCE6",
+--         mute       = "#FF9F9F"
+--     },
+--     notifications = {
+--         font      = "Tamsyn",
+--         font_size = "12",
+--         bar_size  = 32
+--     }
+-- })
+-- alsamargin = wibox.layout.margin(myvolumebar.bar, 5, 8, 80)
+-- wibox.layout.margin.set_top(alsamargin, 12)
+-- wibox.layout.margin.set_bottom(alsamargin, 12)
+-- volumewidget = wibox.widget.background()
+-- volumewidget:set_widget(alsamargin)
+-- volumewidget:set_bgimage(beautiful.widget_bg)
 
 
 -- CPU
@@ -305,7 +281,7 @@ networkwidget:set_widget(netwidget)
 networkwidget:set_bgimage(beautiful.widget_bg)
 
 -- Weather
-yawn = lain.widgets.yawn(123456)
+-- yawn = lain.widgets.yawn(123456)
 
 -- Separators
 first = wibox.widget.textbox('<span font="Tamsyn 4"> </span>')
@@ -325,8 +301,8 @@ spr_left = wibox.widget.imagebox()
 spr_left:set_image(beautiful.spr_left)
 bar = wibox.widget.imagebox()
 bar:set_image(beautiful.bar)
-bottom_bar = wibox.widget.imagebox()
-bottom_bar:set_image(beautiful.bottom_bar)
+-- bottom_bar = wibox.widget.imagebox()
+-- bottom_bar:set_image(beautiful.bottom_bar)
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -399,18 +375,27 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the upper left
     local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(first)
+    left_layout:add(awesome_icon) -- Pedro - ajout menu awesome
+    -- left_layout:add(first)
     left_layout:add(mytaglist[s])
-    left_layout:add(spr_small)
     left_layout:add(mylayoutbox[s])
     left_layout:add(mypromptbox[s])
+    -- left_layout:add(last)
+
+    -- Pedro Widgets that are aligned to the upper center
+    local middle_layout = wibox.layout.fixed.horizontal()
+    -- middle_layout:add(first)
+    middle_layout:add(mytasklist[s])
+    -- middle_layout:add(last)
 
     -- Widgets that are aligned to the upper right
     local right_layout = wibox.layout.fixed.horizontal()
+    -- right_layout:add(first)
+    -- Systray
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    --right_layout:add(mailwidget)
-    right_layout:add(batwidget)
-    --right_layout:add(spr_right)
+    
+    right_layout:add(batwidget)    
+    -- right_layout:add(spr_right)
     -- right_layout:add(prev_icon)
     -- right_layout:add(next_icon)
     -- right_layout:add(stop_icon)
@@ -436,21 +421,22 @@ for s = 1, screen.count() do
     -- right_layout:add(bottom_bar)
     -- right_layout:add(clock_icon)
     right_layout:add(clockwidget)
-    right_layout:add(last)
+    -- right_layout:add(last)
     
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)
+    layout:set_middle(middle_layout)
     layout:set_right(right_layout)
 
     mywibox[s]:set_widget(layout)
-
+-- Pedro - on supprime la bar du bas 
     -- Create the bottom wibox
-    mybottomwibox[s] = awful.wibox({ position = "bottom", screen = s, border_width = 0, height = 20 })
+    -- mybottomwibox[s] = awful.wibox({ position = "bottom", screen = s, border_width = 0, height = 20 })
 
     -- Widgets that are aligned to the bottom left
-    bottom_left_layout = wibox.layout.fixed.horizontal()
-    bottom_left_layout:add(awesome_icon)
+    -- bottom_left_layout = wibox.layout.fixed.horizontal()
+    -- bottom_left_layout:add(awesome_icon)
 
     -- Widgets that are aligned to the bottom right
 --    bottom_right_layout = wibox.layout.fixed.horizontal()
@@ -470,18 +456,20 @@ for s = 1, screen.count() do
 --    bottom_right_layout:add(last)
 
     -- Now bring it all together (with the tasklist in the middle)
-    bottom_layout = wibox.layout.align.horizontal()
-    bottom_layout:set_left(bottom_left_layout)
-    bottom_layout:set_middle(mytasklist[s])
-    bottom_layout:set_right(bottom_right_layout)
-    mybottomwibox[s]:set_widget(bottom_layout)
+    -- bottom_layout = wibox.layout.align.horizontal()
+    -- bottom_layout:set_left(bottom_left_layout)
+    -- bottom_layout:set_middle(mytasklist[s])
+    -- bottom_layout:set_right(bottom_right_layout)
+    -- mybottomwibox[s]:set_widget(bottom_layout)
 
-    -- Set proper backgrounds, instead of beautiful.bg_normal
-    mywibox[s]:set_bg(beautiful.topbar_path .. screen[mouse.screen].workarea.width .. ".png")
-    mybottomwibox[s]:set_bg("#242424")
+    -- -- Set proper backgrounds, instead of beautiful.bg_normal
+    -- mywibox[s]:set_bg(beautiful.topbar_path .. screen[mouse.screen].workarea.width .. ".png")
+    -- mybottomwibox[s]:set_bg("#242424")
 
     -- Create a borderbox above the bottomwibox
-    lain.widgets.borderbox(mybottomwibox[s], s, { position = "top", color = "#0099CC" } )
+    -- lain.widgets.borderbox(mybottomwibox[s], s, { position = "top", color = "#0099CC" } )
+-- Pedro - on supprime la bar du bas 
+
 end
 -- }}}
 
@@ -499,9 +487,6 @@ globalkeys = awful.util.table.join(
     -- https://github.com/copycat-killer/dots/blob/master/bin/screenshot
     awful.key({ altkey }, "p", function() os.execute("screenshot") end),
     
-    -- Pedro - xsnap area
-    awful.key({        }, "Print",function () awful.util.spawn_with_shell("DATE=`date +%d%m%Y_%H%M%S`; xsnap -nogui -file $HOME/screenshot/xsnap$DATE") end),
-
     -- Tag browsing
     awful.key({ modkey }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey }, "Right",  awful.tag.viewnext       ),
@@ -609,6 +594,12 @@ globalkeys = awful.util.table.join(
         awful.util.spawn("xbacklight -dec 10", false) end),
     awful.key({ }, "XF86MonBrightnessUp", function ()
         awful.util.spawn("xbacklight -inc 10", false) end),
+
+    -- Pedro - Screensaver lock
+    awful.key({ modkey, "Control" }, "l",       function () awful.util.spawn("xscreensaver-command -lock") end),
+
+
+
 --[[
     -- ALSA volume control
     awful.key({ altkey }, "Up",
