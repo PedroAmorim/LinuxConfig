@@ -1,0 +1,37 @@
+#Pedro - je defini le theme utilisé par les application GTK2
+#http://awesome.naquadah.org/wiki/Customizing_GTK_Apps
+
+##################
+#      GTK       #
+##################
+
+#include "/usr/share/themes/Clearlooks/gtk-2.0/gtkrc"
+gtk-theme-name = "Clearlooks"
+
+
+##################
+#     FONTS      #
+##################
+
+style "schrift"
+{
+font_name = "Myriad Web 9"
+}
+widget_class "*" style "schrift"
+gtk-font-name = "Myriad Web 9"
+
+
+##################
+#     ICONS      #
+##################
+
+gtk-icon-theme-name = "Crashbit"
+#gtk-icon-theme-name = "Tango"
+
+
+##################
+#    TOOLBARS    #
+##################
+
+gtk-toolbar-style   = GTK_TOOLBAR_ICONS
+
