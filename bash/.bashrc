@@ -119,3 +119,9 @@ fi
 
 #Cowsay on open terminal
 fortune | cowsay -f $(ls /usr/share/cowsay/cows/ | grep -v "kiss|smaller" | shuf | head -n1)
+
+# Pedro
+# Chargement du SSH agent
+if [ -f ~/.bash_sshagent ]; then
+. ~/.bash_sshagent
+fi 

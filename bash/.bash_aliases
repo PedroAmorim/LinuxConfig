@@ -28,6 +28,9 @@ alias reboot='sudo reboot'
 #Environnement de dev
 alias start_bd='skype & | firefox & | thunderbird'
 
+#Awesome
+alias awesometest='~/src/awesome start'
+
 # Git
 alias gitll='git log --abbrev-commit --oneline --graph --decorate'
 alias gitllname='git log --abbrev-commit --oneline --name-only --graph --decorate'
@@ -36,3 +39,4 @@ alias gitst='git status'
 alias gitdiffst='git diff --stat'
 alias gitprune='git gc --prune=now && git clean -f -d'
 alias gitrebase='git rebase -i HEAD~30'
+alias gitrr='git rebase -i --root'
