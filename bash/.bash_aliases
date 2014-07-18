@@ -18,7 +18,7 @@ alias search='sudo apt-cache search '
 alias ll='ls -lah --color=auto '
 alias dir='ls --color=auto --format=vertical'
 
-alias cdwww='cd ~/www/'
+alias cdwww='cd ~/public_html/'
 
 alias wifi='wicd-curses'
 
