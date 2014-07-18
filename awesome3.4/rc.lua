@@ -41,11 +41,11 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
--- beautiful.init("/usr/share/awesome/themes/default/theme.lua")
-beautiful.init("/home/pedro/.config/awesome/theme.lua")
+beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+-- beautiful.init("/home/pedro/.config/awesome/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "urxvt"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -77,7 +77,7 @@ layouts =
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {
-	names = { "Term", "Dev", "Web", "Mail", "Com", "Files", "Other",},
+	names = { "Term", "Dev", "Web", "Mail", "Com", "Files", "Other"},
 	layout = { layouts[4], layouts[2], layouts[10], layouts[2], layouts[2], layouts[2], layouts[2]}
 }
 for s = 1, screen.count() do
@@ -415,22 +415,19 @@ awful.rules.rules = {
       properties = { floating = true } },
     -- Set Web Browsers to always map on tags number 2 of screen 1.
     { rule_any = { class = {"Firefox","Chromium","Iceweasel"} },
-      properties = { tag = tags[1][2], switchtotag = true } },
+      properties = { tag = tags[1][3], switchtotag = true } },
     -- Switch automatique pour Skype et Thunderbird
     { rule_any = { class = {"Icedove","Thunderbird"} },
-      properties = { tag = tags[1][3], switchtotag = true } },
+      properties = { tag = tags[1][4], switchtotag = true } },
     -- Switch automatique pour Skype
     { rule_any = { class = {"Skype"} },
-      properties = { tag = tags[1][4], switchtotag = true } },
+      properties = { tag = tags[1][5], switchtotag = true } },
     -- Set Netbeans to always map on tags number 4 of screen 1.
     { rule_any = { class = {"Eclipse","NetBeans"} },
-      properties = { tag = tags[1][5], switchtotag = true } },
+      properties = { tag = tags[1][2], switchtotag = true } },
     -- Set Gedit to always map on tags number 5 of screen 1.
     { rule = { class = "Gedit" },
-      properties = { tag = tags[1][6], switchtotag = true } },
-
-
-
+      properties = { tag = tags[1][6], switchtotag = true } }
 
 }
 -- }}}
