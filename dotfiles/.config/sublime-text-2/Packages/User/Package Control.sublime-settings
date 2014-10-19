@@ -1,0 +1,20 @@
+{
+	"installed_packages":
+	[
+		"Alignment",
+		"Autoprefixer",
+		"BracketHighlighter",
+		"DocBlockr",
+		"Emmet",
+		"Git",
+		"GitGutter",
+		"Highlighter",
+		"JSHint",
+		"Package Control",
+		"Phpcs",
+		"SublimeCodeIntel",
+		"SublimeLinter",
+		"Theme - Nexus",
+		"Xdebug Client"
+	]
+}

@@ -1,0 +1,24 @@
+{
+    // For remote debugging to resolve the file locations
+    // it is required to configure the path mapping
+    // with the server path as key and local path as value.
+    //
+    // Make sure to use absolute path when defining server path,
+    // because Xdebug debugger engine does not return symbolic links.
+    //
+    // Example:
+    // "/absolute/path/to/file/on/server" : "/path/to/file/on/computer",
+    // "/var/www/htdocs/example/" : "C:/git/websites/example/"
+    "path_mapping": {
+
+    },
+
+    // Determine which URL to launch in the default web browser
+    // when starting/stopping a session.
+    "url": "",
+
+    // Show detailed log information about communication
+    // between debugger engine and Sublime Text.
+    // Log can be found at Packages/User/Xdebug.log
+    "debug": true
+}

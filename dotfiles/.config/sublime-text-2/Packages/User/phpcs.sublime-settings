@@ -1,0 +1,12 @@
+{
+    "phpcs_additional_args": {
+        "--standard": "/home/pamorim/public_html/Netvibes/startpage/config/phpcs.xml",
+        "-n": "" 
+    },
+
+    // Show the quick panel
+    "php_cs_fixer_show_quick_panel": true,
+
+    // Path to where you have the php-cs-fixer installed
+    "php_cs_fixer_executable_path": "/usr/local/bin/php-cs-fixer"
+}
