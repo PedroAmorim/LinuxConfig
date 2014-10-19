@@ -10,9 +10,9 @@ require("naughty")
 -- Load Debian menu entries
 require("debian.menu")
 
--- Pedro Vicious
+-- Pedro 
 require("vicious")
-require("autostart")
+-- require("auostart")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -76,13 +76,15 @@ layouts =
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
-tags = {
-	names = { "Term", "Dev", "Web", "Mail", "Com", "Files", "Other"},
-	layout = { layouts[4], layouts[2], layouts[10], layouts[2], layouts[2], layouts[2], layouts[2]}
-}
+tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag(tags.names, s, tags.layout)    
+    -- tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    tags[s] = awful.tag(
+		{ "Term", "Dev", "Web", "Mail", "Com", "Files", "Other"},
+		 s,
+		 { layouts[2], layouts[2], layouts[2], layouts[2], layouts[2], layouts[2], layouts[2]}
+		)    
 end
 -- }}}
 
@@ -110,11 +112,12 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 os.setlocale("fr_FR.UTF-8") -- Français
 mytextclock = awful.widget.textclock({ align = "right" }," %a %d %b  %H:%M ")
 
--- Pedro - creation des widgets Vicious - START
+-- pamorim - Cutom widget -----------------------------------
+
 spacer = widget({type = "textbox"})
-separator = widget({type = "textbox"})
+-- separator = widget({type = "textbox"})
 spacer.text = " "
-separator.text = "|"
+-- separator.text = "|"
 
 -- CPU usage widget
 cpuwidget = awful.widget.graph()
@@ -159,7 +162,8 @@ vicious.register(memwidget, vicious.widgets.mem,
                     return args[1]
                  end, 13)
                  --update every 13 seconds
--- Pedro - END
+
+-- pamorim - Cutom widget - END   ------------------------------
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
@@ -240,16 +244,12 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
-
+        -- pamorim - add widget -- start
         cpuwidget.widget,
         spacer,
-        separator,
+        memwidget.widget,
         spacer,
-
-	memwidget.widget,
-        spacer,
-        separator,
-        spacer,
+        -- pamorim - add widget -- end
 
         s == 1 and mysystray or nil,
         mytasklist[s],
@@ -259,7 +259,7 @@ end
 -- }}}
 
 -- {{{ Mouse bindings
-    root.buttons(awful.util.table.join(
+root.buttons(awful.util.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
@@ -314,6 +314,9 @@ globalkeys = awful.util.table.join(
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
+-- Standard program
+awful.key({ }, "F12", function () awful.util.spawn("xscreensaver-command -lock") end),
+
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
@@ -324,7 +327,6 @@ globalkeys = awful.util.table.join(
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
               end)
-
 )
 
 clientkeys = awful.util.table.join(
@@ -384,9 +386,7 @@ for i = 1, keynumber do
                       if client.focus and tags[client.focus.screen][i] then
                           awful.client.toggletag(tags[client.focus.screen][i])
                       end
-                  end)
-
-	)
+                  end))
 end
 
 clientbuttons = awful.util.table.join(
@@ -423,12 +423,21 @@ awful.rules.rules = {
     { rule_any = { class = {"Skype"} },
       properties = { tag = tags[1][5], switchtotag = true } },
     -- Set Netbeans to always map on tags number 4 of screen 1.
-    { rule_any = { class = {"Eclipse","NetBeans"} },
+    { rule_any = { class = {"Eclipse","NetBeans","Sublime_Text"} },
       properties = { tag = tags[1][2], switchtotag = true } },
     -- Set Gedit to always map on tags number 5 of screen 1.
     { rule = { class = "Gedit" },
-      properties = { tag = tags[1][6], switchtotag = true } }
+      properties = { tag = tags[1][6], switchtotag = true } },
+    -- Set Firefox to always map on tags number 2 of screen 1.
+    -- { rule = { class = "Firefox" },
+    --   properties = { tag = tags[1][2] } },
 
+    -- Youtube bug fix
+   { rule = { instance = "plugin-container" },
+     properties = { floating = true } },
+   -- chromium
+   { rule = { instance = "exe" },
+     properties = { floating = true } },
 }
 -- }}}
 
@@ -462,4 +471,16 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+
+-- Autostart system
+awful.util.spawn_with_shell("gnome-settings-daemon")
+awful.util.spawn_with_shell("gnome-sound-applet")
+awful.util.spawn_with_shell("nm-applet")
+awful.util.spawn_with_shell("bluetooth-applet")
+awful.util.spawn_with_shell("gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh")
+-- Autostart app
+awful.util.spawn_with_shell("dropbox start -i")
+
+awful.util.spawn_with_shell("xscreensaver -no-splash")
 
