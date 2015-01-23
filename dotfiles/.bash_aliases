@@ -25,9 +25,6 @@ alias wifi='wicd-curses'
 alias halt='sudo halt'
 alias reboot='sudo reboot'
 
-#Environnement de dev
-alias start_bd='skype & | firefox & | thunderbird'
-
 #Awesome
 alias awesometest='~/src/awesome start'
 
@@ -38,5 +35,8 @@ alias gitfetch='git fetch --all'
 alias gitst='git status'
 alias gitdiffst='git diff --stat'
 alias gitprune='git gc --prune=now && git clean -f -d'
-alias gitrebase='git rebase -i HEAD~30'
+alias gitrebasei30='git rebase -i HEAD~30'
 alias gitrr='git rebase -i --root'
+alias gitrc='git rebase --continue'
+alias gitmt='git mergetool'
+
