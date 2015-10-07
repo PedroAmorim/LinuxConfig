@@ -10,9 +10,9 @@ require("naughty")
 -- Load Debian menu entries
 require("debian.menu")
 
--- Pedro 
+-- Pedro
 require("vicious")
--- require("auostart")
+-- require("autostart")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -84,7 +84,7 @@ for s = 1, screen.count() do
 		{ "Term", "Dev", "Web", "Mail", "Com", "Files", "Other"},
 		 s,
 		 { layouts[2], layouts[2], layouts[2], layouts[2], layouts[2], layouts[2], layouts[2]}
-		)    
+		)
 end
 -- }}}
 
@@ -129,7 +129,7 @@ cpuwidget:set_gradient_colors({ "#0D4F8B", "#0276FD", "#63B8FF" })
 -- infobulle
 cpuwidget_t = awful.tooltip({ objects = { cpuwidget.widget },})
 -- Register CPU widget
-vicious.register(cpuwidget, vicious.widgets.cpu, 
+vicious.register(cpuwidget, vicious.widgets.cpu,
                     function (widget, args)
                         cpuwidget_t:set_text("CPU Usage: " .. args[1] .. "%")
                         return args[1]
@@ -314,8 +314,15 @@ globalkeys = awful.util.table.join(
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
+    -- Screensaver
+    awful.key({ modkey }, "F12", function () awful.util.spawn("xscreensaver-command -lock") end),
+
 -- Standard program
-awful.key({ }, "F12", function () awful.util.spawn("xscreensaver-command -lock") end),
+
+    -- Change screen focus
+    awful.key({modkey,            }, "F1",     function () awful.screen.focus(1) end),
+    awful.key({modkey,            }, "F2",     function () awful.screen.focus(2) end),
+    awful.key({modkey,            }, "F3",     function () awful.screen.focus(3) end),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
@@ -423,21 +430,26 @@ awful.rules.rules = {
     { rule_any = { class = {"Skype"} },
       properties = { tag = tags[1][5], switchtotag = true } },
     -- Set Netbeans to always map on tags number 4 of screen 1.
-    { rule_any = { class = {"Eclipse","NetBeans","Sublime_Text"} },
+    { rule_any = { class = {"Eclipse","NetBeans","Sublime_text"} },
       properties = { tag = tags[1][2], switchtotag = true } },
     -- Set Gedit to always map on tags number 5 of screen 1.
     { rule = { class = "Gedit" },
       properties = { tag = tags[1][6], switchtotag = true } },
+    { rule = { class = "Xchat" },
+      properties = { tag = tags[1][5], switchtotag = false } },
     -- Set Firefox to always map on tags number 2 of screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { tag = tags[1][2] } },
 
     -- Youtube bug fix
-   { rule = { instance = "plugin-container" },
-     properties = { floating = true } },
-   -- chromium
-   { rule = { instance = "exe" },
-     properties = { floating = true } },
+    { rule = { instance = "plugin-container" },
+      properties = { floating = true } },
+    -- chromium
+    { rule = { instance = "exe" },
+      properties = { floating = true } },
+    -- Sky
+    --{ rule = { class = "sky" },
+    --  properties = { floating = true } },
 }
 -- }}}
 
@@ -476,11 +488,12 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 -- Autostart system
 awful.util.spawn_with_shell("gnome-settings-daemon")
 awful.util.spawn_with_shell("gnome-sound-applet")
-awful.util.spawn_with_shell("nm-applet")
 awful.util.spawn_with_shell("bluetooth-applet")
+awful.util.spawn_with_shell("nm-applet")
+awful.util.spawn_with_shell("touchpad-indicator")
 awful.util.spawn_with_shell("gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh")
 -- Autostart app
-awful.util.spawn_with_shell("dropbox start -i")
-
+-- awful.util.spawn_with_shell("dropbox start -i")
+awful.util.spawn_with_shell("owncloud")
 awful.util.spawn_with_shell("xscreensaver -no-splash")
 
