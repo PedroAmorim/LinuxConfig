@@ -317,6 +317,9 @@ globalkeys = awful.util.table.join(
     -- Screensaver
     awful.key({ modkey }, "F12", function () awful.util.spawn("xscreensaver-command -lock") end),
 
+    -- Screenshort
+    awful.key({ modkey }, "F11", function () awful.util.spawn("shutter -s") end),
+
 -- Standard program
 
     -- Change screen focus
