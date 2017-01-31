@@ -2,6 +2,8 @@
 	{ "keys": ["alt+s"], "command": "phpcs_sniff_this_file" },
 	{ "keys": ["alt+shift+s"], "command": "phpcs_show_previous_errors" },
 	{ "keys": ["ctrl+alt+shift+s"], "command": "phpcs_clear_sniffer_marks" },
-	{ "keys": ["alt+f"], "command": "phpcs_fix_this_file" }
+    { "keys": ["alt+f"], "command": "phpcs_fix_this_file" },
+	{ "keys": ["ctrl+n"], "command": "advanced_new_file" },
+    { "keys": ["alt+n"], "command": "new_window" }
 ]
 
